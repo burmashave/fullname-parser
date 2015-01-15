@@ -16,3 +16,17 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+
+# Ignore RubyMine stuff:
+/.idea
+
+
+# Ignore other unneeded files.
+database.hml
+*.swp
+*~
+.project
+.DS_Store
+bundler_stubs/
+.secret
