@@ -100,6 +100,13 @@ module Fullname
       '8th' => 'VIII',
       '9th' => 'IX',
     } unless const_defined?(:CONVERSION)
+
+		def get_nickname(name)
+			nickname = name[/'.*?'|".*?"|\(.*?\)/]
+			if nickname
+				nickname.gsub(/[('")]/, '')
+			end
+		end
     
     def parse_fullname(name)
       first_name  = nil
@@ -107,9 +114,12 @@ module Fullname
       last_name   = nil
       prefix      = nil
       suffix      = nil
+			nickname		= nil
       
       # replace "’" to "'"
       name = name.gsub(/’/, "'")
+			# get the nickname (1st encountered parenthetic or quoted substring)
+			nickname = get_nickname(name)
       # remove strings which contain and include in parentheses
       # ex. 'Susan M. (Scully) Schultz'  =>  'Susan M. Schultz'
       #     'Jay (Jung) Heum Kim'        =>  'Jay Heum Kim'
@@ -185,7 +195,7 @@ module Fullname
       end
       suffix_arr.delete_if{|a, b| !b}
       suffix = suffix_arr.size == 0 ? nil : suffix_arr.first.first # only return first suffix
-      return { :last => last_name, :middle => middle_name, :first => first_name, :prefix => prefix, :suffix => suffix }
+      return { :last => last_name, :middle => middle_name, :first => first_name, :prefix => prefix, :suffix => suffix, :nickname => nickname }
     end # << parse_fullname
     extend self
   end
